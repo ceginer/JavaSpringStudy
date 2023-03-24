@@ -13,5 +13,5 @@ public interface KioskInterface {
     public void menuSetting(); // Menu 클래스에 이름,가격,수량을 정하는 것은 마치 글자를 새기는 것과 같으므로 parameter 가 필요하다.
     public void menuOutput(); // 하지만 각인된 글자가 새겨진, 즉 정보가 이미 새겨진 Menu클래스를 출력만 하는 것이므로 parameter는 필요 없다.
     public abstract Menu orderInput() throws Exception;
-    public abstract void orderOutput(Menu totalMenu);
+    public abstract void orderOutput(Menu orderOutput);
 }
