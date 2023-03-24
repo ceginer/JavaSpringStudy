@@ -12,7 +12,7 @@ Note in Notion [Study - java](https://www.notion.so/JAVA-study-b04c8460bf3142d0a
 Patient_management - Java Practice1</br>
 OrderSystem - Java Practice2</br></br>
 <심화></br>
-Edit_Decorator_OrderSystem - Java Practice2</br>
+Edit_Decorator_OrderSystem - Java Practice3</br>
 ->  Note in Notion [Edit_Decorator_OrderSystem](https://www.notion.so/Decorator-OrderSystem-ce064bd18e4b4cb584607a4fe5469199)
 
 
