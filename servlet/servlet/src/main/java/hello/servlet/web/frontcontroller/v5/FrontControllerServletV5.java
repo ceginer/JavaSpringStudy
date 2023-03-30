@@ -25,7 +25,9 @@ import java.util.Map;
 @WebServlet(name = "frontControllerServletV5", urlPatterns = "/front-controller/v5/*")
 public class FrontControllerServletV5 extends HttpServlet {
 
+    // view path 를 가진 Map
     private final Map<String, Object> handlerMappingMap = new HashMap<>();
+    // 여러 handlerAdaptor 리스트
     private final List<MyHandlerAdapter> handlerAdapters = new ArrayList<>();
 
     public FrontControllerServletV5() {
