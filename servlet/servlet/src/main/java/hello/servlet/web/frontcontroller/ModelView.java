@@ -2,7 +2,7 @@ package hello.servlet.web.frontcontroller;
 
 import java.util.HashMap;
 import java.util.Map;
-
+// V3 단계에서 만들어짐
 public class ModelView {
     private String viewName;
     private Map<String, Object> model = new HashMap<>();

@@ -1,4 +1,4 @@
-package hello.servlet.domain.member;
-
-public class MemberRepositoryTest {
-}
+//package hello.servlet.domain.member;
+//
+//public class MemberRepositoryTest {
+//}
