@@ -13,7 +13,7 @@ Refer to [Inflearn - 즐거운 자바](https://www.inflearn.com/course/%EC%A6%90
 [OrderSystem](https://github.com/ceginer/JavaSpringStudy/tree/main/OrderSystem) - Java Practice2</br></br>
 <심화></br>
 Edit_Decorator_OrderSystem - Java Practice3</br>
-->  Note in Notion [Edit_Decorator_OrderSystem](https://www.notion.so/Decorator-OrderSystem-ce064bd18e4b4cb584607a4fe5469199)
+->  <u>Note in Notion</u> [Edit_Decorator_OrderSystem](https://www.notion.so/Decorator-OrderSystem-ce064bd18e4b4cb584607a4fe5469199)
 
 
 
