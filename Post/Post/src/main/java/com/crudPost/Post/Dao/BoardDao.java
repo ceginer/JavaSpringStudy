@@ -40,7 +40,7 @@ public class BoardDao {
         board.setContent(content);
         board.setRegdate(LocalDateTime.now());
         SqlParameterSource params = new BeanPropertySqlParameterSource(board);
-        insertBoard.execute(params);
+        insertBoard.execute(params); // jdbctemplate.update 와 똑같음
     }
 
     @Transactional (readOnly = true) // 조회할 때 이거 써주면 성능 향상
@@ -89,4 +89,17 @@ public class BoardDao {
         jdbcTemplate.update(sql, Map.of("boardId", boardId));
     }
 
+    @Transactional
+    public void updateBoard(int boardId, String title, String content) {
+        String sql = "update board\n" +
+                "set title = :title , content = :content\n" +
+                "where board_id = :boardId";
+        Board board = new Board();
+        board.setBoardId(boardId);
+        board.setTitle(title);
+        board.setContent(content);
+        SqlParameterSource params =  new BeanPropertySqlParameterSource(board);
+        jdbcTemplate.update(sql, params);
+//        jdbcTemplate.update(sql, Map.of("boardId", boardId, "title", title, "content", content));
+    }
 }

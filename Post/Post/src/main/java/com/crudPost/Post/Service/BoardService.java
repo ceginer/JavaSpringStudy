@@ -39,11 +39,27 @@ public class BoardService {
         return board;
     }
 
+    @Transactional // 한개의 board 상세페이지?
+    public Board getBoard(int boardId, boolean updateViewCnt) {
+        // id 에 해당하는 board 객체 가져오기
+        Board board = boardDao.getBoard(boardId);
+        if (updateViewCnt){
+            // 조회수 1 늘려주기
+            boardDao.updateViewCnt(boardId);
+        }
+        return board;
+    }
+
     @Transactional
     public void deleteBoard(int userId, int boardId){
         Board board = boardDao.getBoard(boardId);
         if (board.getUserId() == userId){
             boardDao.deleteBoard(boardId);
         }
+    }
+
+    @Transactional
+    public void updateBoard(int boardId, String title, String content) {
+        boardDao.updateBoard(boardId, title, content);
     }
 }
