@@ -5,13 +5,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="b74bd3f4-3836-418d-bdcf-0d52c8e6a74b" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/../Post/Post/src/main/java/com/crudPost/Post/Controller/PostController.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Post/Post/src/main/java/com/crudPost/Post/Controller/PostController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../Post/Post/src/main/java/com/crudPost/Post/Controller/UserController.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Post/Post/src/main/java/com/crudPost/Post/Controller/UserController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../Post/Post/src/main/java/com/crudPost/Post/Dao/UserDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Post/Post/src/main/java/com/crudPost/Post/Dao/UserDao.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Post/Post/src/main/java/com/crudPost/Post/Dto/USer.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Post/Post/src/main/java/com/crudPost/Post/Dto/User.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Post/Post/src/main/java/com/crudPost/Post/PostApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Post/Post/src/main/java/com/crudPost/Post/PostApplication.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../Post/Post/src/main/java/com/crudPost/Post/Service/UserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Post/Post/src/main/java/com/crudPost/Post/Service/UserService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Post/Post/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/../Post/Post/src/main/resources/application.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../StartSpring/src/main/java/hello/hellospring/repository/JdbcTemplateMemberRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/../StartSpring/src/main/java/hello/hellospring/repository/JdbcTemplateMemberRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Post/Post/src/main/resources/templates/list.html" beforeDir="false" afterPath="$PROJECT_DIR$/../Post/Post/src/main/resources/templates/list.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

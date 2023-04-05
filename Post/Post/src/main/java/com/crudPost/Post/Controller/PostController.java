@@ -1,6 +1,9 @@
 package com.crudPost.Post.Controller;
 
+import com.crudPost.Post.Dto.LoginInfo;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -15,7 +18,11 @@ public class PostController {
 
     // 맨 처음 리스트
     @GetMapping("/")
-    public String list(){
+    public String list(HttpSession httpSession, Model model){
+        // 세션으로 넘겨받은 로그인 정보를 getAttribute 하여 사용
+        LoginInfo loginInfo = (LoginInfo) httpSession.getAttribute("loginInfo");
+        // 템플릿으로 전달
+        model.addAttribute("loginInfo",loginInfo);
         return "list";
     }
 
