@@ -1,12 +1,19 @@
 package com.crudPost.Post.Controller;
 
+import com.crudPost.Post.Service.UserService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
+// 이걸 통해서 @Autowired 처럼 의존성 주입해준거임! - notion 스프링 MVC 참조
+@RequiredArgsConstructor
 public class UserController {
+    // userService 와의 관계 형성! ->  userService.addUser 사용
+    private final UserService userService;
+
     // 회원가입 폼
     @GetMapping("/userRegForm")
     public String userRegForm(){
@@ -19,6 +26,9 @@ public class UserController {
             @RequestParam("name") String name,
             @RequestParam("email")String email,
             @RequestParam("password")String password){
+
+        userService.addUser(name, email, password);
+
         return "redirect:/welcome";
 
         // 받은 파라미터 회원 정보 저장하기

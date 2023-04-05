@@ -14,6 +14,7 @@ public class JdbcTemplateMemberRepository implements MemberRepository {
 
 
     public JdbcTemplateMemberRepository(DataSource dataSource) {
+
         jdbcTemplate = new JdbcTemplate(dataSource);
     }
 
