@@ -1,7 +1,9 @@
 package com.crudPost.Post.Controller;
 
 import com.crudPost.Post.Dto.LoginInfo;
+import com.crudPost.Post.Service.BoardService;
 import jakarta.servlet.http.HttpSession;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -9,7 +11,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
+@RequiredArgsConstructor
 public class PostController {
+    private final BoardService boardService;
     // 게시물 목록을 보여준다.
     // 컨트롤러의 메소드가 리턴하는 문자열은 템플릿 이름이다.
     // http://localhost:8080/-> "list" 0 (forward) 800
@@ -46,9 +50,17 @@ public class PostController {
 
     // 로그인한 사용자가 글쓰기 GET
     @GetMapping("/writeForm")
-    public String writeForm(){
+    public String writeForm(
+            HttpSession httpSession,
+            Model model
+    ){
         // 로그인한 사용자만 글을 써야한다.
         // 세션에서 로그인한 정보를 읽어들인다. 로그인을 하지 않았다면 리스트보기로 자동 이동 시킨다.
+        LoginInfo loginInfo = (LoginInfo) httpSession.getAttribute("loginInfo");
+        if (loginInfo == null) {
+            return "redirect:/loginform";
+        }
+        model.addAttribute("loginInfo",loginInfo);
 
         return "writeForm";
     }
@@ -57,12 +69,13 @@ public class PostController {
     @PostMapping("/write")
     public String write(
             @RequestParam("title") String title,
-            @RequestParam("content") String content
+            @RequestParam("content") String content,
+            HttpSession httpSession
     ){
-        // 로그인한 사용자만 글을 써야한다.
-        // 세션에서 로그인한 정보를 읽어들인다. 로그인을 하지 않았다면 리스트보기로 자동 이동 시킨다.
         System.out.println("title : " + title);
         // 로그인 한 회원 정보 + 제목, 내용을 저장한다.System.out.println("content : " + content);
+        LoginInfo loginInfo = (LoginInfo) httpSession.getAttribute("loginInfo");
+        boardService.addBoard(loginInfo.getUserId(), title, content);
 
         return "redirect:/"; // 리스트 보기로 리다이렉트한다.
     }

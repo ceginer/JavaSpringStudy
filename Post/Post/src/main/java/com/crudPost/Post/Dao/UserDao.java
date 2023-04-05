@@ -25,17 +25,19 @@ public class UserDao {
     // 그냥 jdbcTemplate 의 경우는 sql 에서 비어있는 곳을 ?로 하는 반면,
     // NamedParameterJdbcTemplate 는 sql 에서 ?대신 :변수명 을 이용하여 처리함으로써 순서에 강제를 받지 않는다.
 
-   // jdbcTemplate -> jdbcTemplate.update 시에 사용
+
+    // SimpleJdbcInsertOperations 는 내 DTO 필드에 어떻게 매핑할지를 설계하는 거 (인터페이스임)
+    private SimpleJdbcInsertOperations insertUser;
+   // jdbcTemplate 는 db에 저장하기 위해 필요한 거
     private final NamedParameterJdbcTemplate jdbcTemplate;
     /////////////////////////////
-    // insertUser 는 sql param 을 전달받기 위한 객체? 그래서 나중에 insertUser.execute하여 받아들인다.
-    private SimpleJdbcInsertOperations insertUser;
+
 
     // DAO 가 db와 직접적으로 연동하므로 DAO 에서 datasource 사용
     public UserDao(DataSource dataSource){
         jdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
         /////////////////////////////////////////
-        // SimpleJdbcInsertOperations 를 초기화하면 insert하는 효과를 얻을 수 있다.
+        // SimpleJdbcInsertOperations(인터페이스) 를 생성될 때 부터 어느 테이블에 넣을까? 를 미리 설계
         insertUser = new SimpleJdbcInsert(dataSource)
                 .withTableName("user")
                 .usingGeneratedKeyColumns("user_id");
@@ -50,7 +52,9 @@ public class UserDao {
         // Service에서 이미 트랜잭션이 시작했기 때문에, 그 트랜잭션에 포함된다.
         // insert into user (email, name, password, regdate) values (?, ?, ?, now()); # user_id auto gen
         // ->>> // insert into user (email, name, password, regdate) values (:email, :name, :password, :regdate); # user_id auto gen
-        // SELECT LAST_INSERT_ID();
+        // insert into user 까지의 과정을 생성자에서,
+        // 이후에 (email, name, password, regdate) 과정이 addUser 메서드에서 실행되는 것. 그리고
+        // (:email, :name, :password, :regdate) 부분이 sqlparam 으로 받아들여지는 것임.
         User user = new User();
         user.setEmail(email);
         user.setName(name);
@@ -71,6 +75,8 @@ public class UserDao {
 //    }
 
     // 접근 권한과 관련된 메서드
+    // 위에 썻던 SimpleJdbcInsert 써도 되지만,
+    // 이번에는 직접 sql 작성해서 해볼 것임 -> NamedParameterJdbcTemplate jdbcTemplate 사용
     @Transactional
     public void mappingUserRole(int userId){
         // Service에서 이미 트랜잭션이 시작했기 때문에, 그 트랜잭션에 포함된다.
