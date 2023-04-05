@@ -1,5 +1,6 @@
 package com.crudPost.Post.Controller;
 
+import com.crudPost.Post.Dto.Board;
 import com.crudPost.Post.Dto.LoginInfo;
 import com.crudPost.Post.Service.BoardService;
 import jakarta.servlet.http.HttpSession;
@@ -9,6 +10,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+
+import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
@@ -27,6 +30,22 @@ public class PostController {
         LoginInfo loginInfo = (LoginInfo) httpSession.getAttribute("loginInfo");
         // 템플릿으로 전달
         model.addAttribute("loginInfo",loginInfo);
+
+        int page = 1;
+        int totalCount = boardService.getTotalCount(); // 11
+        List<Board> list = boardService.getBoards(page); // page가 1,2,3,4 ....
+        int pageCount = totalCount / 10; // 1
+        if(totalCount % 10 > 0){ // 나머지가 있을 경우 1page를 추가
+            pageCount++;
+        }
+        int currentPage = page;
+//        System.out.println("totalCount : " + totalCount);
+//        for(Board board : list){
+//            System.out.println(board);
+//        }
+        model.addAttribute("list", list);
+        model.addAttribute("pageCount", pageCount);
+        model.addAttribute("currentPage", currentPage);
         return "list";
     }
 

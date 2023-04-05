@@ -1,9 +1,10 @@
 package com.crudPost.Post.Dao;
 
 import com.crudPost.Post.Dto.Board;
-import com.crudPost.Post.Service.BoardService;
-import lombok.RequiredArgsConstructor;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
@@ -12,8 +13,9 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.sql.DataSource;
-import javax.xml.crypto.Data;
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Map;
 
 @Repository
 public class BoardDao {
@@ -40,4 +42,28 @@ public class BoardDao {
         SqlParameterSource params = new BeanPropertySqlParameterSource(board);
         insertBoard.execute(params);
     }
+
+    @Transactional (readOnly = true) // 조회할 때 이거 써주면 성능 향상
+    public int getTotalCount() {
+        String sql = "select count(*) as total_count from board";
+        // 1개만 돌려줌 -> queryForObject
+        // sql 문에 :email 과 같은 ? 타입이 없으므로 굳이 parameter 를 만들어줄 필요가 없음.->Map.of()
+        // 딱히 넣을만한 클래스도 존재하지 않음 ->그냥 정수 = Integer.class
+        Integer totalCount = jdbcTemplate.queryForObject(sql, Map.of(), Integer.class);
+        return totalCount.intValue();
+    }
+
+    @Transactional(readOnly = true)
+    public List<Board> getBoards(int page) {
+        int start = (page - 1) * 10;
+        String sql ="select b.title,b.content, b.user_id,b.board_id, b.regdate,b.view_cnt,u.name from board b, user u where b.user_id = u.user_id order by board_id desc limit :start, 10;";
+        // 값 여러개 -> query
+        // 여기서 join 한 sql 이므로 BeanBeanPropertySqlParameterSource을 통해 하려면
+        // Board 클래스에 필드 추가해야함
+        RowMapper<Board> rowMapper = BeanPropertyRowMapper.newInstance(Board.class);
+        List<Board> list = jdbcTemplate.query(sql, Map.of("start", start), rowMapper);
+        return list;
+
+    }
+
 }

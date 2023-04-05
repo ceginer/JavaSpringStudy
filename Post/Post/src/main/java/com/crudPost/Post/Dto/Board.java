@@ -15,5 +15,5 @@ public class Board {
     private int userId;
     private LocalDateTime regdate;
     private int viewCnt;
-    private String name;
+    private String name; // BeanPropertySqlParameterSource() 를 위한 추가
     }
