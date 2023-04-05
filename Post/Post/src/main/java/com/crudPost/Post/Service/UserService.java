@@ -19,7 +19,12 @@ public class UserService {
     // Spring Boot는 트랜잭션을 처리해주는 트랜잭션 관리자를 가지고 있다.
     @Transactional
     public User addUser(String name, String email, String password){
+        // 이메일 중복 검사 후, 중복있으면 반환가능, 없으면 null 반환
         // 트랜잭션이 시작된다.
+        User user1 = userDao.getUser(email);
+        if (user1 != null){
+            throw new RuntimeException("이미 가입된 이메일입니다");
+        }
         User user = userDao.addUser(email, name, password);
         userDao.mappingUserRole(user.getUserId()); // 권한을 부여한다.
         return user;

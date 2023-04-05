@@ -91,22 +91,27 @@ public class UserDao {
 
     @Transactional
     public User getUser(String email) {
-        // db에 접근해서 있는 이메일인지, 있는 이메일이면 암호와 맞는지 판단할 것.
+        // db에 접근해서 있는 이메일인지, 있는 이메일이면 암호와 맞는지 판단할 것.-> try catch 사용
+        try {
+            String sql = "select user_id, email,name,password,regdate from user where email = :email";
+            // 위의 sql문의 :email 에 파라미터 email 을 매핑한다는 뜻
+            // 파라미터 하나이므로 MapSqlParameterSource 사용
+            SqlParameterSource param = new MapSqlParameterSource("email",email);
+            // User 클래스의 필드와 모두 일치하므로 BeanProperty 를 사용하면
+            // user_id => setUserId , email => setEmail ... 처럼 각각의 칼럼에 필드를 매핑하게 됨.
+            // rowMapper -> 각각의 칼럼들을 어떤 DTO에 담아줄거냐를 의미함.
+            RowMapper<User> rowMapper = BeanPropertyRowMapper.newInstance(User.class);
+            // email이 일치하지 않을 수도 있으므로, 1개 또는 0개의 칼럼 -> queryForObject 사용
+            // sql 문을 rowMapper 를 이용해서 datasource 를 받은 jdbcTemplate 한테 넣으면 db에서 가져와서
+            // user_id, email ,name .. 들을 User에 매핑한 채로 반환하게 됨.
+            User user = jdbcTemplate.queryForObject(sql,param, rowMapper);
+            // -> 위에서 만약 email 이 없다면 에러 반환하므로 controller 에서 에러처리 또한 필수!
+            return user;
 
-        String sql = "select user_id, email,name,password,regdate from user where email = :email";
-        // 위의 sql문의 :email 에 파라미터 email 을 매핑한다는 뜻
-        // 파라미터 하나이므로 MapSqlParameterSource 사용
-        SqlParameterSource param = new MapSqlParameterSource("email",email);
-        // User 클래스의 필드와 모두 일치하므로 BeanProperty 를 사용하면
-        // user_id => setUserId , email => setEmail ... 처럼 각각의 칼럼에 필드를 매핑하게 됨.
-        // rowMapper -> 각각의 칼럼들을 어떤 DTO에 담아줄거냐를 의미함.
-        RowMapper<User> rowMapper = BeanPropertyRowMapper.newInstance(User.class);
-        // email이 일치하지 않을 수도 있으므로, 1개 또는 0개의 칼럼 -> queryForObject 사용
-        // sql 문을 rowMapper 를 이용해서 datasource 를 받은 jdbcTemplate 한테 넣으면 db에서 가져와서
-        // user_id, email ,name .. 들을 User에 매핑한 채로 반환하게 됨.
-        User user = jdbcTemplate.queryForObject(sql,param, rowMapper);
-        // -> 위에서 만약 email 이 없다면 에러 반환하므로 controller 에서 에러처리 또한 필수!
-        return user;
+        }catch (Exception ex){
+            return null;
+        }
+
 
     }
 }

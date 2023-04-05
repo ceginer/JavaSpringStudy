@@ -5,6 +5,7 @@ import com.crudPost.Post.Dto.LoginInfo;
 import com.crudPost.Post.Service.BoardService;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.java.Log;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,13 +26,13 @@ public class PostController {
 
     // 맨 처음 리스트
     @GetMapping("/")
-    public String list(HttpSession httpSession, Model model){
+    public String list(@RequestParam(name="page", defaultValue = "1") int page,
+                       HttpSession httpSession, Model model){
         // 세션으로 넘겨받은 로그인 정보를 getAttribute 하여 사용
         LoginInfo loginInfo = (LoginInfo) httpSession.getAttribute("loginInfo");
         // 템플릿으로 전달
         model.addAttribute("loginInfo",loginInfo);
 
-        int page = 1;
         int totalCount = boardService.getTotalCount(); // 11
         List<Board> list = boardService.getBoards(page); // page가 1,2,3,4 ....
         int pageCount = totalCount / 10; // 1
@@ -55,10 +56,18 @@ public class PostController {
 
     // 각 게시물 id 에 따른 GET
     @GetMapping("/board")
-    public String board(@RequestParam("id") int id){
-        System.out.println("id : " + id);
+    public String board(@RequestParam("boardId") int boardId,
+                        Model model,
+                        HttpSession httpSession){
+        System.out.println("boardId : " + boardId);
 
         // id에 해당하는 게시물을 읽어온다.
+        Board board = boardService.getBoard(boardId);
+
+        LoginInfo loginInfo = (LoginInfo) httpSession.getAttribute("loginInfo");
+        model.addAttribute("board", board);
+        model.addAttribute("loginInfo", loginInfo);
+
         // id에 해당하는 게시물의 조회수도 1증가한다.
 
         return "board";
@@ -98,4 +107,20 @@ public class PostController {
 
         return "redirect:/"; // 리스트 보기로 리다이렉트한다.
     }
+
+    @GetMapping("/delete")
+    public String delete(
+            @RequestParam("boardId") int boardId,
+            HttpSession session
+    ) {
+        LoginInfo loginInfo = (LoginInfo) session.getAttribute("loginInfo");
+        if (loginInfo == null) { // 세션에 로그인 정보가 없으면 /loginform으로 redirect
+            return "redirect:/loginform";
+        }
+        // loginInfo.getUserId() 사용자가 쓴 글일 경우에만 삭제한다.
+        boardService.deleteBoard(loginInfo.getUserId(), boardId);
+
+        return "redirect:/"; // 리스트 보기로 리다이렉트한다.
+    }
+
 }
